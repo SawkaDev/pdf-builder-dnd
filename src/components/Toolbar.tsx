@@ -14,8 +14,8 @@ const draggableTextComponent: TextComponentData = {
 
 export const Toolbar: React.FC = () => {
   return (
-    <div className="h-full bg-gray-100 p-4">
-      <h2 className="text-lg font-bold mb-4">Components</h2>
+    <div className="h-full p-6">
+      <h2 className="text-2xl font-bold mb-8">Components</h2>
       <DraggableComponent component={draggableTextComponent} />
     </div>
   );
@@ -29,15 +29,22 @@ const DraggableComponent: React.FC<{ component: TextComponentData }> = ({
     data: component,
   });
 
+  const style = transform
+    ? {
+        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+      }
+    : undefined;
+
   return (
     <Button
       ref={setNodeRef}
+      style={style}
       {...listeners}
       {...attributes}
       variant="outline"
-      className="w-full justify-start text-sm"
+      className="w-full justify-start text-lg py-6"
     >
-      <Type className="mr-2 h-4 w-4" />
+      <Type className="mr-4 h-6 w-6" />
       {component.content}
     </Button>
   );

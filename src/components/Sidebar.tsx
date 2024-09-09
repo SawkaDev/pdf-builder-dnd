@@ -1,5 +1,3 @@
-// src/components/Sidebar.tsx
-
 import React from "react";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
@@ -29,9 +27,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   if (!selectedComponent) {
     return (
-      <div className="h-full bg-gray-100 p-4">
-        <h2 className="text-lg font-bold mb-4">Component Configuration</h2>
-        <p>Select a component to edit</p>
+      <div className="h-full p-6">
+        <h2 className="text-2xl font-bold mb-6">Component Configuration</h2>
+        <p className="text-lg">Select a component to edit</p>
       </div>
     );
   }
@@ -46,40 +44,33 @@ export const Sidebar: React.FC<SidebarProps> = ({
   };
 
   const handleSizeChange = (value: string) => {
-    const isMultiline = value === "p";
     updateComponent({
       ...selectedComponent,
       size: value as TextComponentData["size"],
-      isMultiline,
     } as TextComponentData);
   };
 
   return (
-    <div className="h-full bg-gray-100 flex flex-col">
-      <div className="flex-grow overflow-y-auto">
-        <div className="p-4 space-y-4">
-          <h2 className="text-lg font-bold">Component Configuration</h2>
+    <div className="h-full flex flex-col">
+      <div className="flex-grow overflow-y-auto p-6">
+        <h2 className="text-2xl font-bold mb-8">Component Configuration</h2>
+        <div className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="text">Text Content</Label>
-            {(selectedComponent as TextComponentData).isMultiline ? (
-              <Textarea
-                id="text"
-                value={(selectedComponent as TextComponentData).content}
-                onChange={handleTextChange}
-                rows={5}
-                className="w-full resize-none"
-              />
-            ) : (
-              <Input
-                id="text"
-                value={(selectedComponent as TextComponentData).content}
-                onChange={handleTextChange}
-                className="w-full"
-              />
-            )}
+            <Label htmlFor="text" className="text-lg">
+              Text Content
+            </Label>
+            <Textarea
+              id="text"
+              value={(selectedComponent as TextComponentData).content}
+              onChange={handleTextChange}
+              rows={6}
+              className="w-full resize-none text-base"
+            />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="size">Text Size</Label>
+            <Label htmlFor="size" className="text-lg">
+              Text Size
+            </Label>
             <Select
               onValueChange={handleSizeChange}
               defaultValue={(selectedComponent as TextComponentData).size}
@@ -100,12 +91,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
         </div>
       </div>
-      <div className="p-4 bg-gray-200 border-t border-gray-300">
-        <div className="flex justify-end space-x-2">
-          <Button onClick={onCancel} variant="outline">
+      <div className="p-6 bg-gray-100 border-t border-gray-200">
+        <div className="flex justify-end space-x-4">
+          <Button
+            onClick={onCancel}
+            variant="outline"
+            className="text-base px-6 py-2"
+          >
             Cancel
           </Button>
-          <Button onClick={onSave}>Save</Button>
+          <Button onClick={onSave} className="text-base px-6 py-2">
+            Save
+          </Button>
         </div>
       </div>
     </div>

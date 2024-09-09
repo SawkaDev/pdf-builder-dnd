@@ -25,31 +25,25 @@ export const Canvas: React.FC<CanvasProps> = ({
   const isEmpty = components.length === 0;
 
   return (
-    <div className="p-5 min-h-full bg-gray-100 flex flex-col items-center">
-      <h2 className="text-xl font-bold mb-4">Report Template Builder</h2>
+    <div className="min-h-full flex justify-center">
       <div
         ref={setNodeRef}
-        className={`bg-white shadow-lg relative w-[21cm] ${
-          isEmpty ? "h-[200px]" : ""
+        className={`bg-white shadow-lg relative w-full max-w-5xl ${
+          isEmpty ? "h-[842px]" : ""
         }`}
-        style={{
-          paddingTop: "1.27cm",
-          paddingBottom: "1.27cm",
-          paddingLeft: "1.27cm",
-          paddingRight: "1.27cm",
-        }}
+        style={{ padding: "1.27cm" }}
         onClick={onCanvasClick}
       >
         {isEmpty ? (
-          <div className="h-full flex items-center justify-center text-gray-400">
+          <div className="h-full flex items-center justify-center text-gray-400 text-xl">
             Drag components here to start
           </div>
         ) : (
-          <div>
-            {components.map((component, index) => (
+          <div className="space-y-4">
+            {components.map((component) => (
               <React.Fragment key={component.id}>
                 {insertionPoint === component.id && isDragging && (
-                  <div className="h-1 bg-blue-500 w-full rounded-full" />
+                  <div className="h-0.5 bg-blue-500 w-full rounded-full my-2" />
                 )}
                 <SortableTextComponent
                   component={component}
@@ -58,7 +52,7 @@ export const Canvas: React.FC<CanvasProps> = ({
               </React.Fragment>
             ))}
             {isDragging && insertionPoint === null && components.length > 0 && (
-              <div className="h-1 bg-blue-500 w-full rounded-full" />
+              <div className="h-0.5 bg-blue-500 w-full rounded-full my-2" />
             )}
           </div>
         )}
