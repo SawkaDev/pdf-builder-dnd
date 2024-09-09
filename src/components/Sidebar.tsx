@@ -28,7 +28,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   if (!selectedComponent) {
     return (
       <div className="h-full p-6">
-        <h2 className="text-2xl font-bold mb-6">Component Configuration</h2>
+        <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-4">
+          Component Configuration
+        </h2>
         <p className="text-lg">Select a component to edit</p>
       </div>
     );
@@ -53,7 +55,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <div className="h-full flex flex-col">
       <div className="flex-grow overflow-y-auto p-6">
-        <h2 className="text-2xl font-bold mb-8">Component Configuration</h2>
+        <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-4">
+          Component Configuration
+        </h2>
         <div className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="text" className="text-lg">

@@ -17,7 +17,7 @@ import {
 } from "@dnd-kit/sortable";
 import { Toolbar } from "@/components/Toolbar";
 import { CanvasWrapper } from "@/components/CanvasWrapper";
-import { Sidebar } from "@/components/Sidebar";
+import { ResizableSidebar } from "@/components/ResizableSidebar";
 import { ComponentData, TextComponentData } from "@/types";
 import { TextComponent } from "@/components/TextComponent";
 import { v4 as uuidv4 } from "uuid";
@@ -123,14 +123,12 @@ const Home: React.FC = () => {
             />
           </SortableContext>
         </div>
-        <div className="flex-none w-96 h-full overflow-hidden border-l border-gray-200 bg-gray-50">
-          <Sidebar
-            selectedComponent={selectedComponent}
-            updateComponent={updateComponent}
-            onSave={handleSave}
-            onCancel={handleCancel}
-          />
-        </div>
+        <ResizableSidebar
+          selectedComponent={selectedComponent}
+          updateComponent={updateComponent}
+          onSave={handleSave}
+          onCancel={handleCancel}
+        />
       </main>
       <DragOverlay>
         {activeComponent && (

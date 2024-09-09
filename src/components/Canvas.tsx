@@ -35,7 +35,7 @@ export const Canvas: React.FC<CanvasProps> = ({
         onClick={onCanvasClick}
       >
         {isEmpty ? (
-          <div className="h-full flex items-center justify-center text-gray-400 text-2xl">
+          <div className="h-full flex items-center justify-center text-gray-400 text-3xl">
             Drag components here to start
           </div>
         ) : (
@@ -43,7 +43,7 @@ export const Canvas: React.FC<CanvasProps> = ({
             {components.map((component) => (
               <React.Fragment key={component.id}>
                 {insertionPoint === component.id && isDragging && (
-                  <div className="h-0.5 bg-blue-500 w-full rounded-full" />
+                  <div className="h-0.5 bg-blue-400 w-full transition-all duration-300 ease-in-out" />
                 )}
                 <SortableTextComponent
                   component={component}
@@ -52,7 +52,7 @@ export const Canvas: React.FC<CanvasProps> = ({
               </React.Fragment>
             ))}
             {isDragging && insertionPoint === null && components.length > 0 && (
-              <div className="h-0.5 bg-blue-500 w-full rounded-full" />
+              <div className="h-0.5 bg-blue-400 w-full transition-all duration-300 ease-in-out" />
             )}
           </div>
         )}

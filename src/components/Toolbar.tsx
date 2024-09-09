@@ -14,9 +14,15 @@ const draggableTextComponent: TextComponentData = {
 
 export const Toolbar: React.FC = () => {
   return (
-    <div className="h-full p-6">
-      <h2 className="text-2xl font-bold mb-8">Components</h2>
-      <DraggableComponent component={draggableTextComponent} />
+    <div className="h-full bg-gray-50 border-r border-gray-200">
+      <div className="p-6">
+        <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-4">
+          Components
+        </h2>
+        <div className="space-y-3">
+          <DraggableComponent component={draggableTextComponent} />
+        </div>
+      </div>
     </div>
   );
 };
@@ -35,9 +41,9 @@ const DraggableComponent: React.FC<{ component: TextComponentData }> = ({
       {...listeners}
       {...attributes}
       variant="outline"
-      className="w-full justify-start text-lg py-6"
+      className="w-full justify-start text-base py-3 px-4 bg-white hover:bg-gray-100 transition-colors duration-200"
     >
-      <Type className="mr-4 h-6 w-6" />
+      <Type className="mr-3 h-5 w-5" />
       {component.content}
     </Button>
   );
