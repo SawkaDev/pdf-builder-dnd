@@ -132,8 +132,8 @@ const Home: React.FC = () => {
       <DragOverlay>
         {activeComponent && (
           <div
-            className="bg-white border rounded p-2 shadow-md"
-            style={{ width: "250px" }}
+            className="bg-white border rounded shadow-md"
+            style={{ width: "auto", maxWidth: "21cm", opacity: 0.8 }}
           >
             <TextComponent
               component={activeComponent}
