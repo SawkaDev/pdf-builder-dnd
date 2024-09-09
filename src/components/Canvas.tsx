@@ -1,22 +1,18 @@
 import React from "react";
 import { useDroppable } from "@dnd-kit/core";
-import { SortableTextComponent } from "./SortableTextComponent";
+import { SortableComponent } from "./SortableComponent";
 import { ComponentData } from "@/types";
 
 interface CanvasProps {
   components: ComponentData[];
   setSelectedComponent: (component: ComponentData) => void;
   onCanvasClick: (event: React.MouseEvent) => void;
-  insertionPoint: string | null;
-  isDragging: boolean;
 }
 
 export const Canvas: React.FC<CanvasProps> = ({
   components,
   setSelectedComponent,
   onCanvasClick,
-  insertionPoint,
-  isDragging,
 }) => {
   const { setNodeRef } = useDroppable({
     id: "canvas",
@@ -41,19 +37,12 @@ export const Canvas: React.FC<CanvasProps> = ({
         ) : (
           <div>
             {components.map((component) => (
-              <React.Fragment key={component.id}>
-                {insertionPoint === component.id && isDragging && (
-                  <div className="h-0.5 bg-blue-400 w-full transition-all duration-300 ease-in-out" />
-                )}
-                <SortableTextComponent
-                  component={component}
-                  onClick={() => setSelectedComponent(component)}
-                />
-              </React.Fragment>
+              <SortableComponent
+                key={component.id}
+                component={component}
+                onClick={() => setSelectedComponent(component)}
+              />
             ))}
-            {isDragging && insertionPoint === null && components.length > 0 && (
-              <div className="h-0.5 bg-blue-400 w-full transition-all duration-300 ease-in-out" />
-            )}
           </div>
         )}
       </div>

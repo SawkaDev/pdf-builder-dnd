@@ -18,9 +18,10 @@ import {
 import { Toolbar } from "@/components/Toolbar";
 import { CanvasWrapper } from "@/components/CanvasWrapper";
 import { ResizableSidebar } from "@/components/ResizableSidebar";
-import { ComponentData, TextComponentData } from "@/types";
+import { ComponentData, TableComponentData, TextComponentData } from "@/types";
 import { TextComponent } from "@/components/TextComponent";
 import { v4 as uuidv4 } from "uuid";
+import { TableComponent } from "@/components/TableComponent";
 
 const Home: React.FC = () => {
   const [components, setComponents] = useState<ComponentData[]>([]);
@@ -46,11 +47,25 @@ const Home: React.FC = () => {
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
-    if (active.id === "text-component" && over) {
-      const newComponent: TextComponentData = {
-        ...(active.data.current as TextComponentData),
-        id: uuidv4(),
-      };
+    if (
+      (active.id === "text-component" || active.id === "table-component") &&
+      over
+    ) {
+      let newComponent: ComponentData;
+
+      if (active.id === "text-component") {
+        newComponent = {
+          ...(active.data.current as TextComponentData),
+          id: uuidv4(),
+        };
+      } else {
+        newComponent = {
+          ...(active.data.current as TableComponentData),
+          id: uuidv4(),
+          columns: [{ id: uuidv4(), name: "Column 1" }],
+          rows: [{ id: uuidv4(), cells: [""] }],
+        };
+      }
 
       setComponents((prevComponents) => {
         if (over.id === "canvas") {
@@ -74,7 +89,6 @@ const Home: React.FC = () => {
 
     setActiveComponent(null);
   };
-
   const updateComponent = (updatedComponent: ComponentData) => {
     setComponents(
       components.map((c) =>
@@ -138,11 +152,15 @@ const Home: React.FC = () => {
             className="bg-white border rounded shadow-md"
             style={{ width: "250px", opacity: 0.8 }}
           >
-            <TextComponent
-              component={activeComponent}
-              onClick={() => {}}
-              isDragging={true}
-            />
+            {activeComponent.type === "text" ? (
+              <TextComponent
+                component={activeComponent}
+                onClick={() => {}}
+                isDragging={true}
+              />
+            ) : (
+              <TableComponent component={activeComponent} onClick={() => {}} />
+            )}
           </div>
         )}
       </DragOverlay>

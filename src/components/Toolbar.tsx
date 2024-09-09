@@ -1,8 +1,10 @@
+// Toolbar.tsx
+
 import React from "react";
 import { useDraggable } from "@dnd-kit/core";
 import { Button } from "./ui/button";
-import { TextComponentData } from "@/types";
-import { Type } from "lucide-react";
+import { TextComponentData, TableComponentData } from "@/types";
+import { Type, Table } from "lucide-react";
 
 const draggableTextComponent: TextComponentData = {
   type: "text",
@@ -10,6 +12,13 @@ const draggableTextComponent: TextComponentData = {
   size: "p",
   isMultiline: true,
   id: "text-component",
+};
+
+const draggableTableComponent: TableComponentData = {
+  type: "table",
+  id: "table-component",
+  columns: [],
+  rows: [],
 };
 
 export const Toolbar: React.FC = () => {
@@ -21,15 +30,16 @@ export const Toolbar: React.FC = () => {
         </h2>
         <div className="space-y-3">
           <DraggableComponent component={draggableTextComponent} />
+          <DraggableComponent component={draggableTableComponent} />
         </div>
       </div>
     </div>
   );
 };
 
-const DraggableComponent: React.FC<{ component: TextComponentData }> = ({
-  component,
-}) => {
+const DraggableComponent: React.FC<{
+  component: TextComponentData | TableComponentData;
+}> = ({ component }) => {
   const { attributes, listeners, setNodeRef } = useDraggable({
     id: component.id,
     data: component,
@@ -43,8 +53,12 @@ const DraggableComponent: React.FC<{ component: TextComponentData }> = ({
       variant="outline"
       className="w-full justify-start text-base py-3 px-4 bg-white hover:bg-gray-100 transition-colors duration-200"
     >
-      <Type className="mr-3 h-5 w-5" />
-      {component.content}
+      {component.type === "text" ? (
+        <Type className="mr-3 h-5 w-5" />
+      ) : (
+        <Table className="mr-3 h-5 w-5" />
+      )}
+      {component.type === "text" ? "Text" : "Table"}
     </Button>
   );
 };

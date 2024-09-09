@@ -1,7 +1,9 @@
 import React from "react";
-import { ComponentProps } from "@/types";
+import { TextComponentData } from "@/types";
 
-interface TextComponentProps extends ComponentProps {
+interface TextComponentProps {
+  component: TextComponentData;
+  onClick: () => void;
   isDragging?: boolean;
 }
 

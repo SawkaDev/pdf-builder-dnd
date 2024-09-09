@@ -39,13 +39,16 @@ export const CanvasWrapper: React.FC<CanvasWrapperProps> = ({
     },
   });
 
+  const wrappedComponents = components.map((component) => ({
+    ...component,
+    isInsertionPoint: component.id === insertionPoint,
+  }));
+
   return (
     <Canvas
-      components={components}
+      components={wrappedComponents}
       setSelectedComponent={setSelectedComponent}
       onCanvasClick={onCanvasClick}
-      insertionPoint={insertionPoint}
-      isDragging={isDragging}
     />
   );
 };
