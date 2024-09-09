@@ -29,16 +29,9 @@ const DraggableComponent: React.FC<{ component: TextComponentData }> = ({
     data: component,
   });
 
-  const style = transform
-    ? {
-        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-      }
-    : undefined;
-
   return (
     <Button
       ref={setNodeRef}
-      style={style}
       {...listeners}
       {...attributes}
       variant="outline"

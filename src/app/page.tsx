@@ -20,7 +20,6 @@ import { CanvasWrapper } from "@/components/CanvasWrapper";
 import { Sidebar } from "@/components/Sidebar";
 import { ComponentData, TextComponentData } from "@/types";
 import { TextComponent } from "@/components/TextComponent";
-import { DragHandle } from "@/components/DragHandle";
 import { v4 as uuidv4 } from "uuid";
 
 const Home: React.FC = () => {
@@ -106,10 +105,10 @@ const Home: React.FC = () => {
       onDragEnd={handleDragEnd}
     >
       <main className="flex h-screen overflow-hidden">
-        <div className="flex-none w-64 h-full overflow-y-auto">
+        <div className="flex-none w-64 h-full overflow-y-auto border-r border-gray-200">
           <Toolbar />
         </div>
-        <div className="flex-grow overflow-auto">
+        <div className="flex-grow overflow-auto bg-gray-100">
           <SortableContext
             items={components.map((c) => c.id)}
             strategy={verticalListSortingStrategy}
@@ -121,7 +120,7 @@ const Home: React.FC = () => {
             />
           </SortableContext>
         </div>
-        <div className="flex-none w-64 h-full overflow-hidden">
+        <div className="flex-none w-64 h-full overflow-hidden border-l border-gray-200">
           <Sidebar
             selectedComponent={selectedComponent}
             updateComponent={updateComponent}
@@ -129,18 +128,21 @@ const Home: React.FC = () => {
             onCancel={handleCancel}
           />
         </div>
-        <DragOverlay>
-          {activeComponent && (
-            <div className="bg-white border rounded p-2 shadow-md">
-              <TextComponent
-                component={activeComponent}
-                onClick={() => {}}
-                isDragging={true}
-              />
-            </div>
-          )}
-        </DragOverlay>
       </main>
+      <DragOverlay>
+        {activeComponent && (
+          <div
+            className="bg-white border rounded p-2 shadow-md"
+            style={{ width: "250px" }}
+          >
+            <TextComponent
+              component={activeComponent}
+              onClick={() => {}}
+              isDragging={true}
+            />
+          </div>
+        )}
+      </DragOverlay>
     </DndContext>
   );
 };
