@@ -108,20 +108,22 @@ const Home: React.FC = () => {
         <div className="flex-none w-80 h-full overflow-y-auto border-r border-gray-200 bg-gray-50">
           <Toolbar />
         </div>
-        <div className="flex-grow overflow-auto bg-gray-100 p-8">
-          <h1 className="text-3xl font-bold mb-6 text-center">
-            Report Builder
-          </h1>
-          <SortableContext
-            items={components.map((c) => c.id)}
-            strategy={verticalListSortingStrategy}
-          >
-            <CanvasWrapper
-              components={components}
-              setSelectedComponent={setSelectedComponent}
-              onCanvasClick={handleCanvasClick}
-            />
-          </SortableContext>
+        <div className="flex-grow flex flex-col overflow-hidden bg-gray-100">
+          <div className="flex-none h-[76px] flex items-center justify-center px-6 border-b border-gray-200 bg-gray-50">
+            <h1 className="text-2xl font-bold text-gray-800">Report Builder</h1>
+          </div>
+          <div className="flex-grow overflow-auto p-8">
+            <SortableContext
+              items={components.map((c) => c.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              <CanvasWrapper
+                components={components}
+                setSelectedComponent={setSelectedComponent}
+                onCanvasClick={handleCanvasClick}
+              />
+            </SortableContext>
+          </div>
         </div>
         <ResizableSidebar
           selectedComponent={selectedComponent}
