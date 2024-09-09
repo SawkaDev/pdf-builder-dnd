@@ -16,9 +16,9 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { Toolbar } from "@/components/Toolbar";
-import { Canvas } from "@/components/Canvas";
+import { CanvasWrapper } from "@/components/CanvasWrapper";
 import { Sidebar } from "@/components/Sidebar";
-import { ComponentData } from "@/types";
+import { ComponentData, TextComponentData } from "@/types";
 import { TextComponent } from "@/components/TextComponent";
 import { DragHandle } from "@/components/DragHandle";
 import { v4 as uuidv4 } from "uuid";
@@ -55,17 +55,15 @@ const Home: React.FC = () => {
     const { active, over } = event;
 
     if (active.id === "text-component" && over) {
-      const newComponent = {
-        ...(active.data.current as ComponentData),
+      const newComponent: TextComponentData = {
+        ...(active.data.current as TextComponentData),
         id: uuidv4(),
       };
 
       setComponents((prevComponents) => {
         if (over.id === "canvas") {
-          // Add to the end if dropped directly on the canvas
           return [...prevComponents, newComponent];
         } else {
-          // Insert before the component it was dropped on
           const overIndex = prevComponents.findIndex((c) => c.id === over.id);
           return [
             ...prevComponents.slice(0, overIndex),
@@ -123,14 +121,14 @@ const Home: React.FC = () => {
             items={components.map((c) => c.id)}
             strategy={verticalListSortingStrategy}
           >
-            <Canvas
+            <CanvasWrapper
               components={components}
               setSelectedComponent={setSelectedComponent}
               onCanvasClick={handleCanvasClick}
             />
           </SortableContext>
         </div>
-        <div className="flex-none w-64 h-full overflow-y-auto">
+        <div className="flex-none w-64 h-full overflow-hidden">
           <Sidebar
             selectedComponent={selectedComponent}
             updateComponent={updateComponent}
