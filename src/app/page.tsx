@@ -41,14 +41,7 @@ const Home: React.FC = () => {
 
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
-    if (active.id === "text-component") {
-      setActiveComponent(active.data.current as ComponentData);
-    } else {
-      const draggedComponent = components.find((c) => c.id === active.id);
-      if (draggedComponent) {
-        setActiveComponent(draggedComponent);
-      }
-    }
+    setActiveComponent(active.data.current as ComponentData);
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -138,13 +131,12 @@ const Home: React.FC = () => {
         </div>
         <DragOverlay>
           {activeComponent && (
-            <div className="flex items-center w-full max-w-[calc(100vw-32rem)]">
+            <div className="bg-white border rounded p-2 shadow-md">
               <TextComponent
                 component={activeComponent}
                 onClick={() => {}}
                 isDragging={true}
               />
-              <DragHandle />
             </div>
           )}
         </DragOverlay>
