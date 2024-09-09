@@ -105,10 +105,10 @@ const Home: React.FC = () => {
       onDragEnd={handleDragEnd}
     >
       <main className="flex h-screen overflow-hidden">
-        <div className="flex-none w-1/5 min-w-[280px] max-w-[350px] h-full overflow-y-auto border-r border-gray-200 bg-gray-50">
+        <div className="flex-none w-80 h-full overflow-y-auto border-r border-gray-200 bg-gray-50">
           <Toolbar />
         </div>
-        <div className="flex-grow overflow-auto bg-gray-100 p-6">
+        <div className="flex-grow overflow-auto bg-gray-100 p-8">
           <h1 className="text-3xl font-bold mb-6 text-center">
             Report Builder
           </h1>
@@ -123,7 +123,7 @@ const Home: React.FC = () => {
             />
           </SortableContext>
         </div>
-        <div className="flex-none w-1/4 min-w-[320px] max-w-[420px] h-full overflow-hidden border-l border-gray-200 bg-gray-50">
+        <div className="flex-none w-96 h-full overflow-hidden border-l border-gray-200 bg-gray-50">
           <Sidebar
             selectedComponent={selectedComponent}
             updateComponent={updateComponent}
@@ -136,7 +136,7 @@ const Home: React.FC = () => {
         {activeComponent && (
           <div
             className="bg-white border rounded shadow-md"
-            style={{ width: "auto", maxWidth: "100%", opacity: 0.8 }}
+            style={{ width: "250px", opacity: 0.8 }}
           >
             <TextComponent
               component={activeComponent}
