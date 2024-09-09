@@ -1,11 +1,16 @@
 import React from "react";
 import { ComponentProps } from "@/types";
 
-export const TextComponent: React.FC<ComponentProps> = ({
+interface TextComponentProps extends ComponentProps {
+  isDragging?: boolean;
+}
+
+export const TextComponent: React.FC<TextComponentProps> = ({
   component,
   onClick,
+  isDragging,
 }) => {
-  const { content, size, isMultiline } = component;
+  const { content, size } = component;
 
   const renderTextElement = () => {
     switch (size) {
@@ -22,20 +27,18 @@ export const TextComponent: React.FC<ComponentProps> = ({
       case "h6":
         return <h6 className="text-base font-bold">{content}</h6>;
       default:
-        return isMultiline ? (
-          <p className="text-base whitespace-pre-wrap">{content}</p>
-        ) : (
-          <p className="text-base">{content}</p>
-        );
+        return <p className="text-base">{content}</p>;
     }
   };
 
   return (
     <div
       onClick={onClick}
-      className="cursor-move p-2 border border-gray-200 rounded mb-2"
+      className={`flex items-center justify-between p-2 border rounded mb-2 ${
+        isDragging ? "bg-gray-100 opacity-50" : "bg-white"
+      }`}
     >
-      {renderTextElement()}
+      <div className="flex-grow">{renderTextElement()}</div>
     </div>
   );
 };

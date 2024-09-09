@@ -19,6 +19,7 @@ import { Canvas } from "@/components/Canvas";
 import { Sidebar } from "@/components/Sidebar";
 import { ComponentData } from "@/types";
 import { TextComponent } from "@/components/TextComponent";
+import { DragHandle } from "@/components/DragHandle";
 import { v4 as uuidv4 } from "uuid";
 
 const Home: React.FC = () => {
@@ -84,6 +85,14 @@ const Home: React.FC = () => {
     }
   }, []);
 
+  const handleSave = () => {
+    console.log("Current canvas state:", components);
+  };
+
+  const handleCancel = () => {
+    setSelectedComponent(null);
+  };
+
   return (
     <DndContext
       sensors={sensors}
@@ -110,11 +119,18 @@ const Home: React.FC = () => {
           <Sidebar
             selectedComponent={selectedComponent}
             updateComponent={updateComponent}
+            onSave={handleSave}
+            onCancel={handleCancel}
           />
         </div>
         <DragOverlay>
           {activeComponent && (
-            <TextComponent component={activeComponent} onClick={() => {}} />
+            <div className="flex items-center">
+              <DragHandle />
+              <div className="flex-grow">
+                <TextComponent component={activeComponent} onClick={() => {}} />
+              </div>
+            </div>
           )}
         </DragOverlay>
       </main>

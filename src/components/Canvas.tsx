@@ -1,7 +1,7 @@
-import React from 'react';
-import { useDroppable } from '@dnd-kit/core';
-import { SortableTextComponent } from './SortableTextComponent';
-import { ComponentData } from '@/types';
+import React from "react";
+import { useDroppable } from "@dnd-kit/core";
+import { SortableTextComponent } from "./SortableTextComponent";
+import { ComponentData } from "@/types";
 
 interface CanvasProps {
   components: ComponentData[];
@@ -9,14 +9,18 @@ interface CanvasProps {
   onCanvasClick: (event: React.MouseEvent) => void;
 }
 
-export const Canvas: React.FC<CanvasProps> = ({ components, setSelectedComponent, onCanvasClick }) => {
+export const Canvas: React.FC<CanvasProps> = ({
+  components,
+  setSelectedComponent,
+  onCanvasClick,
+}) => {
   const { setNodeRef } = useDroppable({
-    id: 'canvas',
+    id: "canvas",
   });
 
   return (
-    <div 
-      ref={setNodeRef} 
+    <div
+      ref={setNodeRef}
       className="bg-white p-4 min-h-full"
       onClick={onCanvasClick}
     >
