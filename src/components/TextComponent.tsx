@@ -27,7 +27,8 @@ export const TextComponent: React.FC<TextComponentProps> = ({
       case "h6":
         return <h6 className="text-xs font-bold">{content}</h6>;
       default:
-        return <p className="text-base">{content}</p>;
+        // text-base
+        return <p className="text-sm">{content}</p>;
     }
   };
 

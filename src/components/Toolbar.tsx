@@ -6,7 +6,7 @@ import { Type } from "lucide-react";
 
 const draggableTextComponent: TextComponentData = {
   type: "text",
-  content: "New Paragraph",
+  content: "Text",
   size: "p",
   isMultiline: true,
   id: "text-component",
@@ -24,21 +24,14 @@ export const Toolbar: React.FC = () => {
 const DraggableComponent: React.FC<{ component: TextComponentData }> = ({
   component,
 }) => {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+  const { attributes, listeners, setNodeRef } = useDraggable({
     id: component.id,
     data: component,
   });
 
-  const style = transform
-    ? {
-        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-      }
-    : undefined;
-
   return (
     <Button
       ref={setNodeRef}
-      style={style}
       {...listeners}
       {...attributes}
       variant="outline"

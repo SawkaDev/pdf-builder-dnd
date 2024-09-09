@@ -31,7 +31,7 @@ export const Canvas: React.FC<CanvasProps> = ({
         className={`bg-white shadow-lg relative w-[1000px] ${
           isEmpty ? "h-[500px]" : "min-h-[500px]"
         }`}
-        style={{ padding: "48px" }}
+        style={{ padding: "40px" }}
         onClick={onCanvasClick}
       >
         {isEmpty ? (
@@ -39,7 +39,7 @@ export const Canvas: React.FC<CanvasProps> = ({
             Drag components here to start
           </div>
         ) : (
-          <div className="space-y-3">
+          <div>
             {components.map((component) => (
               <React.Fragment key={component.id}>
                 {insertionPoint === component.id && isDragging && (
