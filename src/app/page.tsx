@@ -8,6 +8,7 @@ import {
   useSensor,
   useSensors,
   PointerSensor,
+  DragStartEvent,
 } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -38,7 +39,7 @@ const Home: React.FC = () => {
     })
   );
 
-  const handleDragStart = (event: DragEndEvent) => {
+  const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
     if (active.id === "text-component") {
       setActiveComponent(active.data.current as ComponentData);
@@ -53,12 +54,26 @@ const Home: React.FC = () => {
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
-    if (active.id === "text-component" && over && over.id === "canvas") {
+    if (active.id === "text-component" && over) {
       const newComponent = {
         ...(active.data.current as ComponentData),
         id: uuidv4(),
       };
-      setComponents([...components, newComponent]);
+
+      setComponents((prevComponents) => {
+        if (over.id === "canvas") {
+          // Add to the end if dropped directly on the canvas
+          return [...prevComponents, newComponent];
+        } else {
+          // Insert before the component it was dropped on
+          const overIndex = prevComponents.findIndex((c) => c.id === over.id);
+          return [
+            ...prevComponents.slice(0, overIndex),
+            newComponent,
+            ...prevComponents.slice(overIndex),
+          ];
+        }
+      });
     } else if (over && active.id !== over.id) {
       setComponents((items) => {
         const oldIndex = items.findIndex((item) => item.id === active.id);
@@ -125,11 +140,13 @@ const Home: React.FC = () => {
         </div>
         <DragOverlay>
           {activeComponent && (
-            <div className="flex items-center">
+            <div className="flex items-center w-full max-w-[calc(100vw-32rem)]">
+              <TextComponent
+                component={activeComponent}
+                onClick={() => {}}
+                isDragging={true}
+              />
               <DragHandle />
-              <div className="flex-grow">
-                <TextComponent component={activeComponent} onClick={() => {}} />
-              </div>
             </div>
           )}
         </DragOverlay>

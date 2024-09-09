@@ -34,8 +34,8 @@ export const TextComponent: React.FC<TextComponentProps> = ({
   return (
     <div
       onClick={onClick}
-      className={`flex items-center justify-between p-2 border rounded mb-2 ${
-        isDragging ? "bg-gray-100 opacity-50" : "bg-white"
+      className={`flex items-center justify-between p-2 transition-all duration-200 w-full ${
+        isDragging ? "bg-gray-100 opacity-90" : "bg-white"
       }`}
     >
       <div className="flex-grow">{renderTextElement()}</div>
