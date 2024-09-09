@@ -1,95 +1,125 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
 
-export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+import React, { useState, useCallback } from "react";
+import {
+  DndContext,
+  DragEndEvent,
+  DragOverlay,
+  useSensor,
+  useSensors,
+  PointerSensor,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  arrayMove,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { Toolbar } from "@/components/Toolbar";
+import { Canvas } from "@/components/Canvas";
+import { Sidebar } from "@/components/Sidebar";
+import { ComponentData } from "@/types";
+import { TextComponent } from "@/components/TextComponent";
+import { v4 as uuidv4 } from "uuid";
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+const Home: React.FC = () => {
+  const [components, setComponents] = useState<ComponentData[]>([]);
+  const [selectedComponent, setSelectedComponent] =
+    useState<ComponentData | null>(null);
+  const [activeComponent, setActiveComponent] = useState<ComponentData | null>(
+    null
   );
-}
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    })
+  );
+
+  const handleDragStart = (event: DragEndEvent) => {
+    const { active } = event;
+    if (active.id === "text-component") {
+      setActiveComponent(active.data.current as ComponentData);
+    } else {
+      const draggedComponent = components.find((c) => c.id === active.id);
+      if (draggedComponent) {
+        setActiveComponent(draggedComponent);
+      }
+    }
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (active.id === "text-component" && over && over.id === "canvas") {
+      const newComponent = {
+        ...(active.data.current as ComponentData),
+        id: uuidv4(),
+      };
+      setComponents([...components, newComponent]);
+    } else if (over && active.id !== over.id) {
+      setComponents((items) => {
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = items.findIndex((item) => item.id === over.id);
+        return arrayMove(items, oldIndex, newIndex);
+      });
+    }
+
+    setActiveComponent(null);
+  };
+
+  const updateComponent = (updatedComponent: ComponentData) => {
+    setComponents(
+      components.map((c) =>
+        c.id === updatedComponent.id ? updatedComponent : c
+      )
+    );
+    setSelectedComponent(updatedComponent);
+  };
+
+  const handleCanvasClick = useCallback((event: React.MouseEvent) => {
+    if (event.target === event.currentTarget) {
+      setSelectedComponent(null);
+    }
+  }, []);
+
+  return (
+    <DndContext
+      sensors={sensors}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+    >
+      <main className="flex h-screen overflow-hidden">
+        <div className="flex-none w-64 h-full overflow-y-auto">
+          <Toolbar />
+        </div>
+        <div className="flex-grow overflow-auto">
+          <SortableContext
+            items={components.map((c) => c.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            <Canvas
+              components={components}
+              setSelectedComponent={setSelectedComponent}
+              onCanvasClick={handleCanvasClick}
+            />
+          </SortableContext>
+        </div>
+        <div className="flex-none w-64 h-full overflow-y-auto">
+          <Sidebar
+            selectedComponent={selectedComponent}
+            updateComponent={updateComponent}
+          />
+        </div>
+        <DragOverlay>
+          {activeComponent && (
+            <TextComponent component={activeComponent} onClick={() => {}} />
+          )}
+        </DragOverlay>
+      </main>
+    </DndContext>
+  );
+};
+
+export default Home;
