@@ -62,8 +62,8 @@ const Home: React.FC = () => {
         newComponent = {
           ...(active.data.current as TableComponentData),
           id: uuidv4(),
-          columns: [{ id: uuidv4(), name: "Column 1" }],
-          rows: [{ id: uuidv4(), cells: [""] }],
+          columns: [],
+          rows: [],
         };
       }
 
