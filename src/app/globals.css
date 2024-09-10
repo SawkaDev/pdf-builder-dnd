@@ -70,11 +70,27 @@ body {
 
 .ProseMirror {
   outline: none;
+
+  padding: 0.1rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  /* border-width: 1px; */
+  border-style: solid;
+  /* border-color: lightgray; */
+  /* border-bottom-right-radius: 5pt; */
+  /* border-bottom-left-radius: 5pt; */
+  background-color: #fefcfc;
+
+  height: 15em;
+  min-height: 15em;
+  max-height: 30em;
+  overflow-y: auto;
+  resize: vertical;
 }
 
-.ProseMirror p {
+/* .ProseMirror p {
   margin: 0;
-}
+} */
 
 .ProseMirror ul {
   list-style-type: disc;

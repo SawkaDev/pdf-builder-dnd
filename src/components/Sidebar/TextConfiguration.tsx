@@ -65,7 +65,7 @@ const TextConfiguration: React.FC<SidebarProps> = ({
             <Label htmlFor="text" className="text-lg">
               Text Content
             </Label>
-            <div className="border rounded-md overflow-hidden">
+            <div className="border rounded-md overflow-hidden bg-white">
               <div className="flex flex-wrap gap-1 p-1 bg-gray-50 border-b">
                 <Button
                   onClick={() => editor?.chain().focus().toggleBold().run()}
