@@ -147,15 +147,13 @@ const Home: React.FC = () => {
         </div>
         <div className="flex-grow flex flex-col overflow-hidden bg-gray-100">
           <div className="flex-none h-[76px] border-b border-gray-200 bg-gray-50">
-            <div className="max-w-[1000px] mx-auto h-full flex items-center justify-between px-6">
-              <h1 className="text-2xl font-bold text-gray-800">
-                Report Builder
-              </h1>
+            <div className="max-w-[1000px] mx-auto h-full flex items-center justify-end px-6">
               <div className="text-sm text-gray-600">
                 Last Saved: {lastSaved ? lastSaved.toLocaleString() : "Never"}
               </div>
             </div>
           </div>
+
           <div className="flex-grow overflow-auto p-8">
             <SortableContext
               items={components.map((c) => c.id)}

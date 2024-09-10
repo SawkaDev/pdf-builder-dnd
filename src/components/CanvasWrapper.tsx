@@ -49,6 +49,7 @@ export const CanvasWrapper: React.FC<CanvasWrapperProps> = ({
       components={wrappedComponents}
       setSelectedComponent={setSelectedComponent}
       onCanvasClick={onCanvasClick}
+      isDragging={isDragging}
     />
   );
 };
