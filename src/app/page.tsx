@@ -20,6 +20,7 @@ import { CanvasWrapper } from "@/components/CanvasWrapper";
 import { ResizableSidebar } from "@/components/ResizableSidebar";
 import {
   ComponentData,
+  HeaderComponentData,
   SpacerComponentData,
   TableComponentData,
   TextComponentData,
@@ -28,6 +29,7 @@ import { TextComponent } from "@/components/TextComponent";
 import { v4 as uuidv4 } from "uuid";
 import { TableComponent } from "@/components/TableComponent";
 import { SpacerComponent } from "@/components/SpacerComponent";
+import { HeaderComponent } from "@/components/HeaderComponent";
 
 const Home: React.FC = () => {
   const [components, setComponents] = useState<ComponentData[]>([]);
@@ -64,6 +66,7 @@ const Home: React.FC = () => {
     if (
       (active.id === "text-component" ||
         active.id === "table-component" ||
+        active.id === "header-component" ||
         active.id === "spacer-component") &&
       over
     ) {
@@ -72,6 +75,11 @@ const Home: React.FC = () => {
       if (active.id === "text-component") {
         newComponent = {
           ...(active.data.current as TextComponentData),
+          id: uuidv4(),
+        };
+      } else if (active.id === "header-component") {
+        newComponent = {
+          ...(active.data.current as HeaderComponentData),
           id: uuidv4(),
         };
       } else if (active.id === "spacer-component") {
@@ -183,6 +191,8 @@ const Home: React.FC = () => {
           >
             {activeComponent.type === "text" ? (
               <TextComponent component={activeComponent} onClick={() => {}} />
+            ) : activeComponent.type === "header" ? (
+              <HeaderComponent component={activeComponent} onClick={() => {}} />
             ) : activeComponent.type === "table" ? (
               <TableComponent component={activeComponent} onClick={() => {}} />
             ) : (

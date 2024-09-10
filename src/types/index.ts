@@ -2,8 +2,14 @@ export interface TextComponentData {
   id: string;
   type: "text";
   content: string;
-  size: "p" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+  size: number;
   isMultiline: boolean;
+}
+export interface HeaderComponentData {
+  id: string;
+  type: "header";
+  content: string;
+  level: 1 | 2 | 3 | 4 | 5 | 6;
 }
 
 export interface TableColumnData {
@@ -31,5 +37,6 @@ export interface SpacerComponentData {
 
 export type ComponentData =
   | TextComponentData
+  | HeaderComponentData
   | TableComponentData
   | SpacerComponentData;

@@ -6,6 +6,7 @@ import { TableComponent } from "./TableComponent";
 import { SpacerComponent } from "./SpacerComponent";
 import { ComponentData } from "@/types";
 import { GripVertical } from "lucide-react";
+import { HeaderComponent } from "./HeaderComponent";
 
 interface SortableComponentProps {
   component: ComponentData & { isInsertionPoint?: boolean };
@@ -26,6 +27,8 @@ export const SortableComponent: React.FC<SortableComponentProps> = ({
 
   const renderComponent = () => {
     switch (component.type) {
+      case "header":
+        return <HeaderComponent component={component} onClick={onClick} />;
       case "text":
         return <TextComponent component={component} onClick={onClick} />;
       case "table":

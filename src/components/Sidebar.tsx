@@ -3,6 +3,7 @@ import { ComponentData } from "@/types";
 import TextConfiguration from "./Sidebar/TextConfiguration";
 import TableConfiguration from "./Sidebar/TableConfiguration";
 import SpacerConfiguration from "./Sidebar/SpacerConfiguration";
+import HeaderConfiguration from "./Sidebar/HeaderConfiguration";
 
 export interface SidebarProps {
   selectedComponent: ComponentData | null;
@@ -33,6 +34,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
   if (selectedComponent.type === "text") {
     return (
       <TextConfiguration
+        onCancel={onCancel}
+        onDelete={onDelete}
+        updateComponent={updateComponent}
+        selectedComponent={selectedComponent}
+        onSave={onSave}
+      />
+    );
+  }
+
+  if (selectedComponent.type === "header") {
+    return (
+      <HeaderConfiguration
         onCancel={onCancel}
         onDelete={onDelete}
         updateComponent={updateComponent}

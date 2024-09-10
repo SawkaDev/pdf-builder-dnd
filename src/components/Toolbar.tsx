@@ -6,15 +6,23 @@ import {
   TextComponentData,
   TableComponentData,
   SpacerComponentData,
+  HeaderComponentData,
 } from "@/types";
-import { Type, Table, ArrowUpDown } from "lucide-react";
+import { Type, Table, ArrowUpDown, Heading } from "lucide-react";
 
 const draggableTextComponent: TextComponentData = {
   type: "text",
   content: "Text",
-  size: "p",
+  size: 16,
   isMultiline: true,
   id: "text-component",
+};
+
+const draggableHeaderComponent: HeaderComponentData = {
+  type: "header",
+  content: "Header",
+  level: 1,
+  id: "header-component",
 };
 
 const draggableTableComponent: TableComponentData = {
@@ -31,6 +39,7 @@ const draggableSpacerComponent: SpacerComponentData = {
 };
 
 const components = [
+  { ...draggableHeaderComponent, label: "Header", icon: Heading },
   { ...draggableTextComponent, label: "Text", icon: Type },
   { ...draggableTableComponent, label: "Table", icon: Table },
   { ...draggableSpacerComponent, label: "Spacer", icon: ArrowUpDown },
@@ -54,7 +63,12 @@ export const Toolbar: React.FC = () => {
 };
 
 const DraggableComponent: React.FC<{
-  component: (TextComponentData | TableComponentData | SpacerComponentData) & {
+  component: (
+    | TextComponentData
+    | TableComponentData
+    | SpacerComponentData
+    | HeaderComponentData
+  ) & {
     label: string;
     icon: React.ElementType;
   };

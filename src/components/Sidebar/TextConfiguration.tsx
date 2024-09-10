@@ -2,13 +2,7 @@ import { TextComponentData } from "@/types";
 import { SidebarProps } from "../Sidebar";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
+import { Input } from "../ui/input";
 import { SidebarActions } from "../SidebarActions";
 
 const TextConfiguration: React.FC<SidebarProps> = ({
@@ -18,8 +12,8 @@ const TextConfiguration: React.FC<SidebarProps> = ({
   onCancel,
   onDelete,
 }) => {
-  if (!selectedComponent) {
-    return <></>;
+  if (!selectedComponent || selectedComponent.type !== "text") {
+    return null;
   }
 
   const textComponent = selectedComponent as TextComponentData;
@@ -33,11 +27,14 @@ const TextConfiguration: React.FC<SidebarProps> = ({
     });
   };
 
-  const handleSizeChange = (value: string) => {
-    updateComponent({
-      ...textComponent,
-      size: value as TextComponentData["size"],
-    });
+  const handleSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const size = parseInt(e.target.value, 10);
+    if (!isNaN(size)) {
+      updateComponent({
+        ...textComponent,
+        size,
+      });
+    }
   };
 
   const handleDelete = () => {
@@ -65,25 +62,17 @@ const TextConfiguration: React.FC<SidebarProps> = ({
           </div>
           <div className="space-y-2">
             <Label htmlFor="size" className="text-lg">
-              Text Size
+              Font Size (px)
             </Label>
-            <Select
-              onValueChange={handleSizeChange}
-              defaultValue={textComponent.size}
-            >
-              <SelectTrigger id="size" className="w-full">
-                <SelectValue placeholder="Select size" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="p">Paragraph</SelectItem>
-                <SelectItem value="h1">Heading 1</SelectItem>
-                <SelectItem value="h2">Heading 2</SelectItem>
-                <SelectItem value="h3">Heading 3</SelectItem>
-                <SelectItem value="h4">Heading 4</SelectItem>
-                <SelectItem value="h5">Heading 5</SelectItem>
-                <SelectItem value="h6">Heading 6</SelectItem>
-              </SelectContent>
-            </Select>
+            <Input
+              id="size"
+              type="number"
+              value={textComponent.size}
+              onChange={handleSizeChange}
+              min={1}
+              max={100}
+              className="w-full"
+            />
           </div>
         </div>
       </div>
