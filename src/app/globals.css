@@ -67,3 +67,11 @@
 body {
   @apply bg-background text-foreground;
 }
+
+.ProseMirror {
+  outline: none;
+}
+
+.ProseMirror p {
+  margin: 0;
+}

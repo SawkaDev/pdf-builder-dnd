@@ -1,9 +1,14 @@
+import React from "react";
 import { TextComponentData } from "@/types";
 import { SidebarProps } from "../Sidebar";
 import { Label } from "../ui/label";
-import { Textarea } from "../ui/textarea";
 import { Input } from "../ui/input";
 import { SidebarActions } from "../SidebarActions";
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Underline from "@tiptap/extension-underline";
+import { Button } from "../ui/button";
+import { Bold, Italic, Underline as UnderlineIcon } from "lucide-react";
 
 const TextConfiguration: React.FC<SidebarProps> = ({
   selectedComponent,
@@ -18,14 +23,16 @@ const TextConfiguration: React.FC<SidebarProps> = ({
 
   const textComponent = selectedComponent as TextComponentData;
 
-  const handleTextChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    updateComponent({
-      ...textComponent,
-      content: e.target.value,
-    });
-  };
+  const editor = useEditor({
+    extensions: [StarterKit, Underline],
+    content: textComponent.content,
+    onUpdate: ({ editor }) => {
+      updateComponent({
+        ...textComponent,
+        content: editor.getHTML(),
+      });
+    },
+  });
 
   const handleSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const size = parseInt(e.target.value, 10);
@@ -52,13 +59,46 @@ const TextConfiguration: React.FC<SidebarProps> = ({
             <Label htmlFor="text" className="text-lg">
               Text Content
             </Label>
-            <Textarea
-              id="text"
-              value={textComponent.content}
-              onChange={handleTextChange}
-              rows={6}
-              className="w-full resize-none text-base"
-            />
+            <div className="border rounded-md overflow-hidden">
+              <div className="flex space-x-1 p-1 bg-gray-50 border-b">
+                <Button
+                  onClick={() => editor?.chain().focus().toggleBold().run()}
+                  variant="ghost"
+                  size="icon"
+                  className={`w-8 h-8 ${
+                    editor?.isActive("bold") ? "bg-gray-200" : ""
+                  }`}
+                >
+                  <Bold className="w-4 h-4" />
+                </Button>
+                <Button
+                  onClick={() => editor?.chain().focus().toggleItalic().run()}
+                  variant="ghost"
+                  size="icon"
+                  className={`w-8 h-8 ${
+                    editor?.isActive("italic") ? "bg-gray-200" : ""
+                  }`}
+                >
+                  <Italic className="w-4 h-4" />
+                </Button>
+                <Button
+                  onClick={() =>
+                    editor?.chain().focus().toggleUnderline().run()
+                  }
+                  variant="ghost"
+                  size="icon"
+                  className={`w-8 h-8 ${
+                    editor?.isActive("underline") ? "bg-gray-200" : ""
+                  }`}
+                >
+                  <UnderlineIcon className="w-4 h-4" />
+                </Button>
+              </div>
+              <EditorContent
+                editor={editor}
+                className="p-2 focus-within:outline-none min-h-[100px]"
+              />
+            </div>
           </div>
           <div className="space-y-2">
             <Label htmlFor="size" className="text-lg">
