@@ -8,7 +8,13 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import { Button } from "../ui/button";
-import { Bold, Italic, Underline as UnderlineIcon } from "lucide-react";
+import {
+  Bold,
+  Italic,
+  Underline as UnderlineIcon,
+  List,
+  ListOrdered,
+} from "lucide-react";
 
 const TextConfiguration: React.FC<SidebarProps> = ({
   selectedComponent,
@@ -60,7 +66,7 @@ const TextConfiguration: React.FC<SidebarProps> = ({
               Text Content
             </Label>
             <div className="border rounded-md overflow-hidden">
-              <div className="flex space-x-1 p-1 bg-gray-50 border-b">
+              <div className="flex flex-wrap gap-1 p-1 bg-gray-50 border-b">
                 <Button
                   onClick={() => editor?.chain().focus().toggleBold().run()}
                   variant="ghost"
@@ -92,6 +98,30 @@ const TextConfiguration: React.FC<SidebarProps> = ({
                   }`}
                 >
                   <UnderlineIcon className="w-4 h-4" />
+                </Button>
+                <Button
+                  onClick={() =>
+                    editor?.chain().focus().toggleBulletList().run()
+                  }
+                  variant="ghost"
+                  size="icon"
+                  className={`w-8 h-8 ${
+                    editor?.isActive("bulletList") ? "bg-gray-200" : ""
+                  }`}
+                >
+                  <List className="w-4 h-4" />
+                </Button>
+                <Button
+                  onClick={() =>
+                    editor?.chain().focus().toggleOrderedList().run()
+                  }
+                  variant="ghost"
+                  size="icon"
+                  className={`w-8 h-8 ${
+                    editor?.isActive("orderedList") ? "bg-gray-200" : ""
+                  }`}
+                >
+                  <ListOrdered className="w-4 h-4" />
                 </Button>
               </div>
               <EditorContent
