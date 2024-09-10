@@ -31,6 +31,7 @@ import { SpacerComponent } from "@/components/SpacerComponent";
 
 const Home: React.FC = () => {
   const [components, setComponents] = useState<ComponentData[]>([]);
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [selectedComponent, setSelectedComponent] =
     useState<ComponentData | null>(null);
   const [activeComponent, setActiveComponent] = useState<ComponentData | null>(
@@ -127,6 +128,7 @@ const Home: React.FC = () => {
 
   const handleSave = () => {
     console.log("Current canvas state:", components);
+    setLastSaved(new Date());
   };
 
   const handleCancel = () => {
@@ -144,8 +146,15 @@ const Home: React.FC = () => {
           <Toolbar />
         </div>
         <div className="flex-grow flex flex-col overflow-hidden bg-gray-100">
-          <div className="flex-none h-[76px] flex items-center justify-center px-6 border-b border-gray-200 bg-gray-50">
-            <h1 className="text-2xl font-bold text-gray-800">Report Builder</h1>
+          <div className="flex-none h-[76px] border-b border-gray-200 bg-gray-50">
+            <div className="max-w-[1000px] mx-auto h-full flex items-center justify-between px-6">
+              <h1 className="text-2xl font-bold text-gray-800">
+                Report Builder
+              </h1>
+              <div className="text-sm text-gray-600">
+                Last Saved: {lastSaved ? lastSaved.toLocaleString() : "Never"}
+              </div>
+            </div>
           </div>
           <div className="flex-grow overflow-auto p-8">
             <SortableContext
