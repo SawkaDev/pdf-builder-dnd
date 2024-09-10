@@ -20,7 +20,7 @@ export const TableComponent: React.FC<TableComponentProps> = ({
     return (
       <div
         onClick={onClick}
-        className="p-4 border border-dashed border-gray-300 bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors duration-150 ease-in-out"
+        className="p-4 m-2 border border-dashed border-gray-300 bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors duration-150 ease-in-out"
       >
         <p className="text-gray-500 text-center">
           Click to create table layout

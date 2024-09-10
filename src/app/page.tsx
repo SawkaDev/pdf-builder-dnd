@@ -18,10 +18,16 @@ import {
 import { Toolbar } from "@/components/Toolbar";
 import { CanvasWrapper } from "@/components/CanvasWrapper";
 import { ResizableSidebar } from "@/components/ResizableSidebar";
-import { ComponentData, TableComponentData, TextComponentData } from "@/types";
+import {
+  ComponentData,
+  SpacerComponentData,
+  TableComponentData,
+  TextComponentData,
+} from "@/types";
 import { TextComponent } from "@/components/TextComponent";
 import { v4 as uuidv4 } from "uuid";
 import { TableComponent } from "@/components/TableComponent";
+import { SpacerComponent } from "@/components/SpacerComponent";
 
 const Home: React.FC = () => {
   const [components, setComponents] = useState<ComponentData[]>([]);
@@ -48,7 +54,9 @@ const Home: React.FC = () => {
     const { active, over } = event;
 
     if (
-      (active.id === "text-component" || active.id === "table-component") &&
+      (active.id === "text-component" ||
+        active.id === "table-component" ||
+        active.id === "spacer-component") &&
       over
     ) {
       let newComponent: ComponentData;
@@ -57,6 +65,12 @@ const Home: React.FC = () => {
         newComponent = {
           ...(active.data.current as TextComponentData),
           id: uuidv4(),
+        };
+      } else if (active.id === "spacer-component") {
+        newComponent = {
+          ...(active.data.current as SpacerComponentData),
+          id: uuidv4(),
+          height: 20, // Default height
         };
       } else {
         newComponent = {
@@ -154,8 +168,10 @@ const Home: React.FC = () => {
           >
             {activeComponent.type === "text" ? (
               <TextComponent component={activeComponent} onClick={() => {}} />
-            ) : (
+            ) : activeComponent.type === "table" ? (
               <TableComponent component={activeComponent} onClick={() => {}} />
+            ) : (
+              <SpacerComponent component={activeComponent} onClick={() => {}} />
             )}
           </div>
         )}

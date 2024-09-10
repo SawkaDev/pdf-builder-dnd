@@ -16,6 +16,7 @@ import {
   TableComponentData,
   TableColumnData,
   TableRowData,
+  SpacerComponentData,
 } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 
@@ -254,5 +255,57 @@ export const Sidebar: React.FC<SidebarProps> = ({
     );
   }
 
+  if (selectedComponent.type === "spacer") {
+    const spacerComponent = selectedComponent as SpacerComponentData;
+
+    const handleHeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const height = parseInt(e.target.value, 10);
+      if (!isNaN(height)) {
+        updateComponent({
+          ...spacerComponent,
+          height,
+        });
+      }
+    };
+
+    return (
+      <div className="h-full flex flex-col">
+        <div className="flex-grow overflow-y-auto p-6">
+          <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-4">
+            Spacer Configuration
+          </h2>
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="height" className="text-lg">
+                Height (px)
+              </Label>
+              <Input
+                id="height"
+                type="number"
+                value={spacerComponent.height}
+                onChange={handleHeightChange}
+                min={1}
+                className="w-full text-base"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="p-6 bg-gray-100 border-t border-gray-200">
+          <div className="flex justify-end space-x-4">
+            <Button
+              onClick={onCancel}
+              variant="outline"
+              className="text-base px-6 py-2"
+            >
+              Cancel
+            </Button>
+            <Button onClick={onSave} className="text-base px-6 py-2">
+              Save
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return null;
 };

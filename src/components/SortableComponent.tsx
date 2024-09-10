@@ -3,6 +3,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { TextComponent } from "./TextComponent";
 import { TableComponent } from "./TableComponent";
+import { SpacerComponent } from "./SpacerComponent";
 import { ComponentData } from "@/types";
 import { GripVertical } from "lucide-react";
 
@@ -29,6 +30,8 @@ export const SortableComponent: React.FC<SortableComponentProps> = ({
         return <TextComponent component={component} onClick={onClick} />;
       case "table":
         return <TableComponent component={component} onClick={onClick} />;
+      case "spacer":
+        return <SpacerComponent component={component} onClick={onClick} />;
       default:
         return null;
     }

@@ -23,4 +23,13 @@ export interface TableComponentData {
   rows: TableRowData[];
 }
 
-export type ComponentData = TextComponentData | TableComponentData;
+export interface SpacerComponentData {
+  id: string;
+  type: "spacer";
+  height: number;
+}
+
+export type ComponentData =
+  | TextComponentData
+  | TableComponentData
+  | SpacerComponentData;
