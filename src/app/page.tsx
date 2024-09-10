@@ -37,6 +37,13 @@ const Home: React.FC = () => {
     null
   );
 
+  const handleDeleteComponent = (id: string) => {
+    setComponents((prevComponents) =>
+      prevComponents.filter((component) => component.id !== id)
+    );
+    setSelectedComponent(null);
+  };
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -158,6 +165,7 @@ const Home: React.FC = () => {
           updateComponent={updateComponent}
           onSave={handleSave}
           onCancel={handleCancel}
+          onDelete={handleDeleteComponent}
         />
       </main>
       <DragOverlay>

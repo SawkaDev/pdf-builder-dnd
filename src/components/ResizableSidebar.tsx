@@ -7,6 +7,7 @@ interface ResizableSidebarProps {
   updateComponent: (updatedComponent: ComponentData) => void;
   onSave: () => void;
   onCancel: () => void;
+  onDelete: (id: string) => void;
 }
 
 export const ResizableSidebar: React.FC<ResizableSidebarProps> = (props) => {

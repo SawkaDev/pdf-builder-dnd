@@ -19,12 +19,14 @@ import {
   SpacerComponentData,
 } from "@/types";
 import { v4 as uuidv4 } from "uuid";
+import { SidebarActions } from "./SidebarActions";
 
 interface SidebarProps {
   selectedComponent: ComponentData | null;
   updateComponent: (updatedComponent: ComponentData) => void;
   onSave: () => void;
   onCancel: () => void;
+  onDelete: (id: string) => void; // Add this line
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -32,6 +34,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   updateComponent,
   onSave,
   onCancel,
+  onDelete, // Add this line
 }) => {
   if (!selectedComponent) {
     return (
@@ -39,10 +42,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-4">
           Component Configuration
         </h2>
-        <p className="text-lg">Select a component to edit</p>
+        <p className="text-lg">Select or add a component to edit.</p>
       </div>
     );
   }
+
+  const handleDelete = () => {
+    onDelete(selectedComponent.id);
+  };
 
   if (selectedComponent.type === "text") {
     const textComponent = selectedComponent as TextComponentData;
@@ -106,20 +113,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
           </div>
         </div>
-        <div className="p-6 bg-gray-100 border-t border-gray-200">
-          <div className="flex justify-end space-x-4">
-            <Button
-              onClick={onCancel}
-              variant="outline"
-              className="text-base px-6 py-2"
-            >
-              Cancel
-            </Button>
-            <Button onClick={onSave} className="text-base px-6 py-2">
-              Save
-            </Button>
-          </div>
-        </div>
+        <SidebarActions
+          onDelete={handleDelete}
+          onCancel={onCancel}
+          onSave={onSave}
+        />
       </div>
     );
   }
@@ -237,20 +235,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
           </div>
         </div>
-        <div className="p-6 bg-gray-100 border-t border-gray-200">
-          <div className="flex justify-end space-x-4">
-            <Button
-              onClick={onCancel}
-              variant="outline"
-              className="text-base px-6 py-2"
-            >
-              Cancel
-            </Button>
-            <Button onClick={onSave} className="text-base px-6 py-2">
-              Save
-            </Button>
-          </div>
-        </div>
+        <SidebarActions
+          onDelete={handleDelete}
+          onCancel={onCancel}
+          onSave={onSave}
+        />
       </div>
     );
   }
@@ -290,22 +279,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
           </div>
         </div>
-        <div className="p-6 bg-gray-100 border-t border-gray-200">
-          <div className="flex justify-end space-x-4">
-            <Button
-              onClick={onCancel}
-              variant="outline"
-              className="text-base px-6 py-2"
-            >
-              Cancel
-            </Button>
-            <Button onClick={onSave} className="text-base px-6 py-2">
-              Save
-            </Button>
-          </div>
-        </div>
+        <SidebarActions
+          onDelete={handleDelete}
+          onCancel={onCancel}
+          onSave={onSave}
+        />
       </div>
     );
   }
+
   return null;
 };
