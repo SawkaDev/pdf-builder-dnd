@@ -1,16 +1,15 @@
+// TextComponent.tsx
 import React from "react";
 import { TextComponentData } from "@/types";
 
 interface TextComponentProps {
   component: TextComponentData;
   onClick: () => void;
-  isDragging?: boolean;
 }
 
 export const TextComponent: React.FC<TextComponentProps> = ({
   component,
   onClick,
-  isDragging,
 }) => {
   const { content, size } = component;
 
@@ -29,20 +28,12 @@ export const TextComponent: React.FC<TextComponentProps> = ({
       case "h6":
         return <h6 className="text-xs font-bold">{content}</h6>;
       default:
-        // text-base
         return <p className="text-sm">{content}</p>;
     }
   };
 
   return (
-    <div
-      onClick={onClick}
-      className={`p-2 ${isDragging ? "opacity-50" : ""} ${
-        component.id === "text-component"
-          ? "border border-dashed border-gray-300 rounded"
-          : ""
-      }`}
-    >
+    <div onClick={onClick} className="p-2">
       {renderTextElement()}
     </div>
   );

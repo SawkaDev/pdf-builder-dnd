@@ -153,11 +153,7 @@ const Home: React.FC = () => {
             style={{ width: "250px", opacity: 0.8 }}
           >
             {activeComponent.type === "text" ? (
-              <TextComponent
-                component={activeComponent}
-                onClick={() => {}}
-                isDragging={true}
-              />
+              <TextComponent component={activeComponent} onClick={() => {}} />
             ) : (
               <TableComponent component={activeComponent} onClick={() => {}} />
             )}
