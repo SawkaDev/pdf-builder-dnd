@@ -1,7 +1,7 @@
 import React from "react";
 import { TextComponentData } from "@/types";
 import DOMPurify from "dompurify";
-import parse, { DOMNode, domToReact, Element } from "html-react-parser";
+import parse, { DOMNode, Element, domToReact } from "html-react-parser";
 
 interface TextComponentProps {
   component: TextComponentData;
@@ -9,10 +9,10 @@ interface TextComponentProps {
 }
 
 const styles = {
-  ul: { paddingLeft: "20px", listStyleType: "disc" },
-  ol: { paddingLeft: "20px", listStyleType: "decimal" },
-  // li: { marginBottom: "0.25em" },
-  // p: { marginBottom: "0.5em" },
+  ul: { paddingLeft: "20px", listStyleType: "disc", margin: "0em 0em" },
+  ol: { paddingLeft: "20px", listStyleType: "decimal", margin: "0em 0em" },
+  p: { minHeight: "1em", margin: "0.5em 0" },
+  // "li > p": { margin: "0" }
 };
 
 export const TextComponent: React.FC<TextComponentProps> = ({
@@ -30,9 +30,24 @@ export const TextComponent: React.FC<TextComponentProps> = ({
         const elementName = domNode.name as keyof typeof styles;
         if (styles[elementName]) {
           const TagName = domNode.name as keyof JSX.IntrinsicElements;
+          let style = styles[elementName];
+
+          // Special handling for p tags inside li
+          if (
+            elementName === "p" &&
+            domNode.parent &&
+            (domNode.parent as Element).name === "li"
+          ) {
+            style = styles["li > p"];
+          }
+
           return (
-            <TagName style={styles[elementName]} {...domNode.attribs}>
-              {domToReact(domNode.children as DOMNode[], options)}
+            <TagName style={style} {...domNode.attribs}>
+              {domNode.children.length === 0 && elementName === "p" ? (
+                <br />
+              ) : (
+                domToReact(domNode.children as unknown as DOMNode[], options)
+              )}
             </TagName>
           );
         }

@@ -38,6 +38,14 @@ const TextConfiguration: React.FC<SidebarProps> = ({
         content: editor.getHTML(),
       });
     },
+    // editorProps: {
+    //   attributes: {
+    //     class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none',
+    //   },
+    // },
+    // parseOptions: {
+    //   preserveWhitespace: 'full',
+    // },
   });
 
   const handleSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {

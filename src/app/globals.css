@@ -69,35 +69,62 @@ body {
 }
 
 .ProseMirror {
-  outline: none;
-
-  padding: 0.1rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-  /* border-width: 1px; */
-  border-style: solid;
-  /* border-color: lightgray; */
-  /* border-bottom-right-radius: 5pt; */
-  /* border-bottom-left-radius: 5pt; */
-  background-color: #fefcfc;
-
+  outline: none;
   height: 15em;
   min-height: 15em;
   max-height: 30em;
   overflow-y: auto;
   resize: vertical;
+  background-color: #fefcfc;
+
+  > * + * {
+    margin-top: 0.75em;
+  }
+
+  ul,
+  ol {
+    padding: 0 1rem;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    line-height: 1.1;
+  }
+
+  p {
+    margin: 0.7em 0;
+    line-height: 1.5;
+  }
+
+  ul,
+  ol {
+    margin: 0.5em 0;
+    padding-left: 20px;
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  ol {
+    list-style-type: decimal;
+  }
+
+  li > p {
+    margin: 0;
+  }
 }
 
-/* .ProseMirror p {
-  margin: 0;
-} */
-
-.ProseMirror ul {
-  list-style-type: disc;
-  padding-left: 1em;
-}
-
-.ProseMirror ol {
-  list-style-type: decimal;
-  padding-left: 1em;
+.ProseMirror p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
 }
