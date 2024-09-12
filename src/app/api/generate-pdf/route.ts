@@ -92,7 +92,8 @@ const generatePDF = (data: PDFContent[]): TCreatedPdf => {
 };
 
 export async function POST(req: NextRequest) {
-  const ip = req.ip ?? "127.0.0.1";
+  const forwardedFor = req.headers.get('x-forwarded-for');
+  const ip = forwardedFor ? forwardedFor.split(',')[0] : req.ip ?? '127.0.0.1';
   const { success } = await ratelimit.limit(ip);
 
   if (!success) {
