@@ -1,12 +1,12 @@
-# DragDrop PDF Builder
+# PDF Builder - Drag and Drop
 
 ## About
 
-DragDrop PDF Builder is a powerful and intuitive web application that allows users to create professional PDFs using a simple drag-and-drop interface. Design your documents with ease, customize them to your needs, and export high-quality PDFs in seconds.
+DragDrop PDF Builder is an intuitive web application that allows users to create professional PDFs using a simple drag-and-drop interface. Design your documents with ease, customize them to your needs, and export high-quality PDFs in seconds. This project was intended to familirize myself with how real-time websites, interactive builders and drag and drop applications are implemented.
 
 ## Test It Out
 
-You can test out the DragDrop PDF Builder [here](#).
+You can test out the PDF Builder [here](https://pdf-builder-dnd.vercel.app/).
 
 ## Features
 
