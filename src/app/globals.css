@@ -77,7 +77,7 @@ body {
   max-height: 30em;
   overflow-y: auto;
   resize: vertical;
-  background-color: #fefcfc;
+  /* background-color: #fefcfc; */
 
   > * + * {
     margin-top: 0.75em;

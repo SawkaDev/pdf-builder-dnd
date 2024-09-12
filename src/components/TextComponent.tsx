@@ -12,7 +12,7 @@ const styles = {
   ul: { paddingLeft: "20px", listStyleType: "disc", margin: "0em 0em" },
   ol: { paddingLeft: "20px", listStyleType: "decimal", margin: "0em 0em" },
   p: { minHeight: "1em", margin: "0.5em 0" },
-  // "li > p": { margin: "0" }
+  "li > p": { margin: "0" }
 };
 
 export const TextComponent: React.FC<TextComponentProps> = ({

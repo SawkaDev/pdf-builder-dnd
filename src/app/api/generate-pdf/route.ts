@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Ratelimit } from "@upstash/ratelimit";
+import { kv } from "@vercel/kv";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import {
@@ -10,6 +12,12 @@ import {
 import { generatePDFFromHTML } from "./htmlToPdf";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
+const ratelimit = new Ratelimit({
+  redis: kv,
+  limiter: Ratelimit.slidingWindow(2, "10 s"),
+  analytics: true,
+});
 
 interface PDFContent {
   type: string;
@@ -28,13 +36,12 @@ const generatePDF = (data: PDFContent[]) => {
         case "header":
           return { text: item.content || "", style: `header${item.level}` };
         case "text":
-          return generatePDFFromHTML(item.content);
+          return generatePDFFromHTML(item.content, item.size || 12);
         case "table":
           const tableBody: TableCell[][] = [
             item.columns?.map((col) => ({
               text: col.name,
               style: "tableHeader",
-              bold: false,
             })) || [],
             ...(item.rows ? item.rows.map((row) => row.cells) : []),
           ];
@@ -44,6 +51,7 @@ const generatePDF = (data: PDFContent[]) => {
               widths: item.columns?.map(() => "*") || [],
               body: tableBody,
             },
+            margin: [0, 20, 0, 0],
           } as Content;
         case "spacer":
           return { text: "", margin: [0, item.height || 0, 0, 0] };
@@ -58,7 +66,7 @@ const generatePDF = (data: PDFContent[]) => {
   const docDefinition: TDocumentDefinitions = {
     content,
     pageSize: "A4" as PageSize,
-    defaultStyle: { font: "Roboto", lineHeight: 1, fontSize: 12 },
+    defaultStyle: { font: "Roboto", lineHeight: 1, fontSize: 9 },
     styles: {
       header1: { fontSize: 24, bold: true },
       header2: { fontSize: 22, bold: true },
@@ -74,6 +82,13 @@ const generatePDF = (data: PDFContent[]) => {
 };
 
 export async function POST(req: NextRequest) {
+  const ip = req.ip ?? "127.0.0.1";
+  const { success } = await ratelimit.limit(ip);
+
+  if (!success) {
+    return NextResponse.json({ message: "Too many requests" }, { status: 429 });
+  }
+
   try {
     const data: PDFContent[] = await req.json();
     const pdfDoc = generatePDF(data);

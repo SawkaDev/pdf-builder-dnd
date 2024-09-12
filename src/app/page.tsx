@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   DndContext,
   DragEndEvent,
@@ -31,10 +31,39 @@ import { TableComponent } from "@/components/TableComponent";
 import { SpacerComponent } from "@/components/SpacerComponent";
 import { HeaderComponent } from "@/components/HeaderComponent";
 import { Button } from "@/components/ui/button";
+import { Popup } from "@/components/Popup/Popup";
 
 const Home: React.FC = () => {
   const [components, setComponents] = useState<ComponentData[]>([]);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const [openPopup, setOpenPopup] = useState<boolean>(false);
+
+  useEffect(() => {
+    const savedComponentsJSON = localStorage.getItem("savedComponents");
+    if (savedComponentsJSON) {
+      try {
+        const savedComponents = JSON.parse(savedComponentsJSON);
+        setComponents(savedComponents);
+      } catch (error) {
+        console.error("Error parsing saved components:", error);
+      }
+    }
+
+    const lastSavedTimeString = localStorage.getItem("lastSavedTime");
+    if (lastSavedTimeString) {
+      try {
+        const lastSavedTime = new Date(lastSavedTimeString);
+        setLastSaved(lastSavedTime);
+      } catch (error) {
+        console.error("Error parsing last saved time:", error);
+      }
+    }
+  }, []);
+
+  const closePopup = () => {
+    setOpenPopup(false);
+  };
+
   const [selectedComponent, setSelectedComponent] =
     useState<ComponentData | null>(null);
   const [activeComponent, setActiveComponent] = useState<ComponentData | null>(
@@ -150,7 +179,13 @@ const Home: React.FC = () => {
 
   const handleSave = () => {
     console.log("Current canvas state:", components);
-    setLastSaved(new Date());
+
+    localStorage.setItem("savedComponents", JSON.stringify(components));
+
+    const currentTime = new Date();
+    setLastSaved(currentTime);
+
+    localStorage.setItem("lastSavedTime", currentTime.toISOString());
   };
 
   const handleCancel = () => {
@@ -159,23 +194,25 @@ const Home: React.FC = () => {
 
   const handleExport = async () => {
     try {
-      const response = await fetch('/api/generate-pdf', {
-        method: 'POST',
+      const response = await fetch("/api/generate-pdf", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(components),
       });
-  
+
       if (!response.ok) {
-        throw new Error('Failed to generate PDF');
+        const error = await response.json();
+        setOpenPopup(true);
+        throw new Error("Failed to generate PDF");
       }
-  
+
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
-      window.open(url, '_blank');
+      window.open(url, "_blank");
     } catch (error) {
-      console.error('Error exporting PDF:', error);
+      console.error("Error exporting PDF:", error);
     }
   };
 
@@ -185,12 +222,23 @@ const Home: React.FC = () => {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
+      <Popup
+        title="Rate Limit Exceeded!"
+        isOpen={openPopup}
+        onClose={closePopup}
+      >
+        Only 2 Generation requests per 10 seconds are allowed.
+      </Popup>
       <main className="flex h-screen overflow-hidden">
         <div className="flex-none w-80 h-full overflow-y-auto border-r border-gray-200 bg-gray-50">
           <Toolbar />
         </div>
         <div className="flex-grow flex flex-col overflow-hidden bg-gray-100">
-          <Header lastSaved={lastSaved} onSave={handleSave} onExport={handleExport} />
+          <Header
+            lastSaved={lastSaved}
+            onSave={handleSave}
+            onExport={handleExport}
+          />
           <div className="flex-grow overflow-auto p-8">
             <SortableContext
               items={components.map((c) => c.id)}
@@ -221,11 +269,11 @@ const Home: React.FC = () => {
   );
 };
 
-const Header: React.FC<{ lastSaved: Date | null; onSave: () => void; onExport: () => void }> = ({
-  lastSaved,
-  onSave,
-  onExport,
-}) => (
+const Header: React.FC<{
+  lastSaved: Date | null;
+  onSave: () => void;
+  onExport: () => void;
+}> = ({ lastSaved, onSave, onExport }) => (
   <div className="flex-none h-[76px] border-b border-gray-200 bg-gray-50">
     <div className="max-w-[1000px] mx-auto h-full flex items-center justify-between px-6">
       <div className="flex space-x-4">
