@@ -22,6 +22,8 @@
     "@tiptap/starter-kit": "^2.6.6",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "dompurify": "^3.1.6",
+    "html-react-parser": "^5.1.16",
     "lucide-react": "^0.439.0",
     "next": "14.2.9",
     "pdfmake": "^0.2.12",
@@ -32,6 +34,7 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
+    "@types/dompurify": "^3.0.5",
     "@types/node": "^20",
     "@types/pdfmake": "^0.2.9",
     "@types/react": "^18",
