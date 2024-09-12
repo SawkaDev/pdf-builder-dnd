@@ -38,6 +38,7 @@ const Home: React.FC = () => {
   const [components, setComponents] = useState<ComponentData[]>([]);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [openPopup, setOpenPopup] = useState<boolean>(false);
+  const [isExporting, setIsExporting] = useState<boolean>(false);
 
   useEffect(() => {
     const savedComponentsJSON = localStorage.getItem("savedComponents");
@@ -194,6 +195,7 @@ const Home: React.FC = () => {
   };
 
   const handleExport = async () => {
+    setIsExporting(true);
     try {
       const response = await fetch("/api/generate-pdf", {
         method: "POST",
@@ -213,6 +215,8 @@ const Home: React.FC = () => {
       window.open(url, "_blank");
     } catch (error) {
       console.error("Error exporting PDF:", error);
+    } finally {
+      setIsExporting(false);
     }
   };
 
@@ -238,6 +242,7 @@ const Home: React.FC = () => {
             lastSaved={lastSaved}
             onSave={handleSave}
             onExport={handleExport}
+            isExporting={isExporting}
           />
           <div className="flex-grow overflow-auto p-8">
             <SortableContext
@@ -273,7 +278,8 @@ const Header: React.FC<{
   lastSaved: Date | null;
   onSave: () => void;
   onExport: () => void;
-}> = ({ lastSaved, onSave, onExport }) => (
+  isExporting: boolean;
+}> = ({ lastSaved, onSave, onExport, isExporting }) => (
   <div className="flex-none h-[76px] border-b border-gray-200 bg-gray-50">
     <div className="max-w-[1000px] mx-auto h-full flex items-center justify-between px-6">
       <div className="flex space-x-4">
@@ -286,8 +292,9 @@ const Header: React.FC<{
         <Button
           onClick={onExport}
           className="text-base px-6 py-2 bg-green-600 hover:bg-green-700 text-white"
+          disabled={isExporting}
         >
-          Export
+          {isExporting ? "Exporting..." : "Export"}
         </Button>
       </div>
       <div className="text-sm text-gray-600">
