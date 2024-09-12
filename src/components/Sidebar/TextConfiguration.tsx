@@ -23,20 +23,19 @@ const TextConfiguration: React.FC<SidebarProps> = ({
   onCancel,
   onDelete,
 }) => {
-  if (!selectedComponent || selectedComponent.type !== "text") {
-    return null;
-  }
-
-  const textComponent = selectedComponent as TextComponentData;
-
   const editor = useEditor({
     extensions: [StarterKit, Underline],
-    content: textComponent.content,
+    content:
+      selectedComponent?.type === "text"
+        ? (selectedComponent as TextComponentData).content
+        : "",
     onUpdate: ({ editor }) => {
-      updateComponent({
-        ...textComponent,
-        content: editor.getHTML(),
-      });
+      if (selectedComponent?.type === "text") {
+        updateComponent({
+          ...selectedComponent,
+          content: editor.getHTML(),
+        });
+      }
     },
     // editorProps: {
     //   attributes: {
@@ -48,11 +47,15 @@ const TextConfiguration: React.FC<SidebarProps> = ({
     // },
   });
 
+  if (!selectedComponent || selectedComponent.type !== "text") {
+    return null;
+  }
+
   const handleSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const size = parseInt(e.target.value, 10);
     if (!isNaN(size)) {
       updateComponent({
-        ...textComponent,
+        ...selectedComponent,
         size,
       });
     }
@@ -145,7 +148,7 @@ const TextConfiguration: React.FC<SidebarProps> = ({
             <Input
               id="size"
               type="number"
-              value={textComponent.size}
+              value={selectedComponent.size}
               onChange={handleSizeChange}
               min={1}
               max={100}

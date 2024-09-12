@@ -9,6 +9,7 @@ import {
   useSensors,
   PointerSensor,
   DragStartEvent,
+  Active,
 } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -118,7 +119,7 @@ const Home: React.FC = () => {
     ].includes(id);
   };
 
-  const createNewComponent = (active: any): ComponentData => {
+  const createNewComponent = (active: Active): ComponentData => {
     switch (active.id) {
       case "text-component":
         return { ...(active.data.current as TextComponentData), id: uuidv4() };
@@ -203,7 +204,6 @@ const Home: React.FC = () => {
       });
 
       if (!response.ok) {
-        const error = await response.json();
         setOpenPopup(true);
         throw new Error("Failed to generate PDF");
       }

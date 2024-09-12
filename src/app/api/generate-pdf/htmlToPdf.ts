@@ -1,3 +1,7 @@
+// TODO: Fix this. This is very bad pracitce but some of the inputs to convert a tiptap html are not typed
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import Bold from "@tiptap/extension-bold";
 import BulletList from "@tiptap/extension-bullet-list";
 import Document from "@tiptap/extension-document";
@@ -14,14 +18,15 @@ function createText(text: string, size: number, bold?: boolean) {
     fontSize: size * 0.75,
   };
 }
-function transferToMainStruct(dest: any, source: any) {
-  for (var i = 0; i < source.length; i++) {
+function transferToMainStruct(dest: Array<any>, source: Array<any>) {
+  for (let i = 0; i < source.length; i++) {
     dest.push(source[i]);
   }
 }
-function doesMarksIncludeBold(marks: any) {
+
+function doesMarksIncludeBold(marks: Array<{ type: string }>) {
   if (marks) {
-    for (var i = 0; i < marks.length; i++) {
+    for (let i = 0; i < marks.length; i++) {
       if (marks[i].type && marks[i].type === "bold") {
         return true;
       }
@@ -29,12 +34,13 @@ function doesMarksIncludeBold(marks: any) {
   }
   return false;
 }
+
 function iterateOverContent(content: any, isRoot: boolean, size: number) {
-  var ret: any = [];
-  for (var i = 0; i < content.length; i++) {
+  const ret: any = [];
+  for (let i = 0; i < content.length; i++) {
     if (content[i].type === "paragraph") {
       if (content[i].content) {
-        var tmp = iterateOverContent(content[i].content, false, size);
+        const tmp = iterateOverContent(content[i].content, false, size);
         if (isRoot === false) {
           ret.push(createText("\n", size));
         }
@@ -50,13 +56,13 @@ function iterateOverContent(content: any, isRoot: boolean, size: number) {
         )
       );
     } else if (content[i].type === "bulletList") {
-      var tmp = iterateOverContent(content[i].content, true, size);
+      const tmp = iterateOverContent(content[i].content, true, size);
       ret.push({ ul: tmp });
     } else if (content[i].type === "orderedList") {
-      var tmp = iterateOverContent(content[i].content, true, size);
+      const tmp = iterateOverContent(content[i].content, true, size);
       ret.push({ ol: tmp });
     } else if (content[i].type === "listItem") {
-      var tmp = iterateOverContent(content[i].content, isRoot, size);
+      const tmp = iterateOverContent(content[i].content, isRoot, size);
       transferToMainStruct(ret, tmp);
     } else {
       console.log("Not Handled", content[i].type);
@@ -68,7 +74,7 @@ function iterateOverContent(content: any, isRoot: boolean, size: number) {
 
 export function generatePDFFromHTML(html: any, size: number) {
   if (html) {
-    var cleanHTML = generateJSON(html, [
+    const cleanHTML = generateJSON(html, [
       Bold,
       Paragraph,
       Document,
@@ -78,7 +84,7 @@ export function generatePDFFromHTML(html: any, size: number) {
       ListItem,
     ]);
     if (cleanHTML && cleanHTML.content) {
-      var pdfData = iterateOverContent(cleanHTML.content, false, size);
+      const pdfData = iterateOverContent(cleanHTML.content, false, size);
       return pdfData;
     }
   }

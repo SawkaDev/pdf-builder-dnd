@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Ratelimit } from "@upstash/ratelimit";
 import { kv } from "@vercel/kv";
-import pdfMake from "pdfmake/build/pdfmake";
+import pdfMake, { TCreatedPdf } from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import {
   TDocumentDefinitions,
@@ -29,7 +29,17 @@ interface PDFContent {
   height?: number;
 }
 
-const generatePDF = (data: PDFContent[]) => {
+const handleError = (error: unknown) => {
+  console.error("Error:", error);
+  const message =
+    error instanceof Error ? error.message : "Unknown error occurred";
+  return NextResponse.json(
+    { message: "Error generating PDF", error: message },
+    { status: 500 }
+  );
+};
+
+const generatePDF = (data: PDFContent[]): TCreatedPdf => {
   const content: Content[] = data
     .map((item): Content | undefined => {
       switch (item.type) {
@@ -93,23 +103,29 @@ export async function POST(req: NextRequest) {
     const data: PDFContent[] = await req.json();
     const pdfDoc = generatePDF(data);
 
-    return new Promise((resolve, reject) => {
+    return new Promise<NextResponse>((resolve, reject) => {
+      const timeoutId = setTimeout(() => {
+        reject(new Error("PDF generation timed out"));
+      }, 30000);
+
       pdfDoc.getBase64((data: string) => {
-        const pdfBuffer = Buffer.from(data, "base64");
-        const response = new NextResponse(pdfBuffer, {
-          headers: {
-            "Content-Type": "application/pdf",
-            "Content-Disposition": "inline; filename=generated.pdf",
-          },
-        });
-        resolve(response);
+        clearTimeout(timeoutId);
+        try {
+          const pdfBuffer = Buffer.from(data, "base64");
+          resolve(
+            new NextResponse(pdfBuffer, {
+              headers: {
+                "Content-Type": "application/pdf",
+                "Content-Disposition": "inline; filename=generated.pdf",
+              },
+            })
+          );
+        } catch (error) {
+          reject(error);
+        }
       });
-    });
+    }).catch(handleError);
   } catch (error) {
-    console.error("Error generating PDF:", error);
-    return NextResponse.json(
-      { message: "Error generating PDF", error: (error as Error).message },
-      { status: 500 }
-    );
+    return handleError(error);
   }
 }

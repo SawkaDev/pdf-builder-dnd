@@ -50,7 +50,7 @@ export const Toolbar: React.FC = () => {
     <div className="h-full bg-gray-50 border-r border-gray-200 overflow-y-auto">
       <div className="p-6">
         <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-4">
-          Report Builder
+          PDF Builder
         </h2>
         <div className="grid grid-cols-2 gap-4">
           {components.map((component) => (
