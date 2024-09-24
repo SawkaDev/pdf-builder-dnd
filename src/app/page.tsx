@@ -29,10 +29,10 @@ import { TableComponent } from "@/components/drag-components/TableComponent";
 import { SpacerComponent } from "@/components/drag-components/SpacerComponent";
 import { HeaderComponent } from "@/components/drag-components/HeaderComponent";
 import { Button } from "@/components/ui/button";
-import { Popup } from "@/components/popup/Popup";
+import { Popup } from "@/components/pop-up/Popup";
 import { Toolbar } from "@/components/toolbar/Toolbar";
 import { CanvasWrapper } from "@/components/canvas/CanvasWrapper";
-import { ResizableSidebar } from "@/components/sidebar/ResizableSidebar";
+import { ResizableSidebar } from "@/components/side-bar/ResizableSidebar";
 
 const Home: React.FC = () => {
   const [components, setComponents] = useState<ComponentData[]>([]);
