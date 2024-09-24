@@ -1,8 +1,8 @@
 import { SpacerComponentData } from "@/types";
-import { SidebarProps } from "../Sidebar";
+import { SidebarProps } from "./Sidebar";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import { SidebarActions } from "../SidebarActions";
+import { SidebarActions } from "./SidebarActions";
 
 const SpacerConfiguration: React.FC<SidebarProps> = ({
   selectedComponent,

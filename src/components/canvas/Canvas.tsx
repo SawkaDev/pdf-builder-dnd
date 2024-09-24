@@ -1,7 +1,7 @@
 import React from "react";
 import { useDroppable } from "@dnd-kit/core";
-import { SortableComponent } from "./SortableComponent";
 import { ComponentData } from "@/types";
+import { SortableComponent } from "../drag-components/SortableComponent";
 
 interface CanvasProps {
   components: ComponentData[];

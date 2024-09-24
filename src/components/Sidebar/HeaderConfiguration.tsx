@@ -1,5 +1,5 @@
 import { HeaderComponentData } from "@/types";
-import { SidebarProps } from "../Sidebar";
+import { SidebarProps } from "./Sidebar";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import {
@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { SidebarActions } from "../SidebarActions";
+import { SidebarActions } from "./SidebarActions";
 
 const HeaderConfiguration: React.FC<SidebarProps> = ({
   selectedComponent,

@@ -1,9 +1,9 @@
 import { TableColumnData, TableComponentData, TableRowData } from "@/types";
-import { SidebarProps } from "../Sidebar";
+import { SidebarProps } from "./Sidebar";
 import { v4 as uuidv4 } from "uuid";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { SidebarActions } from "../SidebarActions";
+import { SidebarActions } from "./SidebarActions";
 
 const TableConfiguration: React.FC<SidebarProps> = ({
   selectedComponent,

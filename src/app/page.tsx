@@ -16,9 +16,6 @@ import {
   arrayMove,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { Toolbar } from "@/components/Toolbar";
-import { CanvasWrapper } from "@/components/CanvasWrapper";
-import { ResizableSidebar } from "@/components/ResizableSidebar";
 import {
   ComponentData,
   HeaderComponentData,
@@ -26,13 +23,16 @@ import {
   TableComponentData,
   TextComponentData,
 } from "@/types";
-import { TextComponent } from "@/components/TextComponent";
+import { TextComponent } from "@/components/drag-components/TextComponent";
 import { v4 as uuidv4 } from "uuid";
-import { TableComponent } from "@/components/TableComponent";
-import { SpacerComponent } from "@/components/SpacerComponent";
-import { HeaderComponent } from "@/components/HeaderComponent";
+import { TableComponent } from "@/components/drag-components/TableComponent";
+import { SpacerComponent } from "@/components/drag-components/SpacerComponent";
+import { HeaderComponent } from "@/components/drag-components/HeaderComponent";
 import { Button } from "@/components/ui/button";
-import { Popup } from "@/components/Popup/Popup";
+import { Popup } from "@/components/popup/Popup";
+import { Toolbar } from "@/components/toolbar/Toolbar";
+import { CanvasWrapper } from "@/components/canvas/CanvasWrapper";
+import { ResizableSidebar } from "@/components/sidebar/ResizableSidebar";
 
 const Home: React.FC = () => {
   const [components, setComponents] = useState<ComponentData[]>([]);
@@ -180,8 +180,6 @@ const Home: React.FC = () => {
   }, []);
 
   const handleSave = () => {
-    console.log("Current canvas state:", components);
-
     localStorage.setItem("savedComponents", JSON.stringify(components));
 
     const currentTime = new Date();

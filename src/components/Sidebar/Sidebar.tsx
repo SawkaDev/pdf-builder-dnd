@@ -1,9 +1,9 @@
 import React from "react";
 import { ComponentData } from "@/types";
-import TextConfiguration from "./Sidebar/TextConfiguration";
-import TableConfiguration from "./Sidebar/TableConfiguration";
-import SpacerConfiguration from "./Sidebar/SpacerConfiguration";
-import HeaderConfiguration from "./Sidebar/HeaderConfiguration";
+import TextConfiguration from "./TextConfiguration";
+import TableConfiguration from "./TableConfiguration";
+import SpacerConfiguration from "./SpacerConfiguration";
+import HeaderConfiguration from "./HeaderConfiguration";
 
 export interface SidebarProps {
   selectedComponent: ComponentData | null;

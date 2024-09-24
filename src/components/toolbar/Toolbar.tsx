@@ -1,7 +1,7 @@
 // Toolbar.tsx
 import React from "react";
 import { useDraggable } from "@dnd-kit/core";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import {
   TextComponentData,
   TableComponentData,

@@ -1,9 +1,9 @@
 import React from "react";
 import { TextComponentData } from "@/types";
-import { SidebarProps } from "../Sidebar";
+import { SidebarProps } from "./Sidebar";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import { SidebarActions } from "../SidebarActions";
+import { SidebarActions } from "./SidebarActions";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
